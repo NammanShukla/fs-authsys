@@ -22,8 +22,6 @@
     session <br>
     >"{"cookie":{"originalMaxAge":86400000,"expires":"2025-07-02T16:11:02.97…" <br>
     <br>
-    
-    
     -deserializes user with each request 
 
 - registers user by username and password, saves new user to the db 
