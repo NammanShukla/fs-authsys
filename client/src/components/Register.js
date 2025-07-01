@@ -10,6 +10,8 @@ export default function Register() {
   const [touched, setTouched] = useState({ username: false, password: false });
   const [showPassword, setShowPassword] = useState(false);
   const [strength, setStrength] = useState('');
+  const [serverError, setServerError] = useState('');
+
   const nav = useNavigate();
 
   const handleChange = (e) => {
@@ -66,15 +68,17 @@ export default function Register() {
   const isValid = Object.keys(errors).length === 0 && form.username && form.password;
 
   const register = async (e) => {
-    e.preventDefault();
-    if (!isValid) return;
-    try {
-      await API.post('/auth/register', form);
-      nav('/login');
-    } catch (err) {
-      alert('Registration failed');
-    }
-  };
+  e.preventDefault();
+  if (!isValid) return;
+  try {
+    await API.post('/auth/register', form);
+    nav('/login');
+  } catch (err) {
+    const message = err.response?.data?.error || 'Registration failed';
+    setServerError(message);
+  }
+};
+
 
   return (
     <>
@@ -82,7 +86,6 @@ export default function Register() {
       <main className="main-container">
         <form onSubmit={register} className="form-container">
           <h2>Register</h2>
-
           <div className="input-group">
             <input
               name="username"
@@ -95,6 +98,8 @@ export default function Register() {
             {touched.username && errors.username && (
               <p className="error-msg">{errors.username}</p>
             )}
+            {serverError && <p className="error-msg">{serverError}</p>}
+
           </div>
 
           <div className="input-group">
