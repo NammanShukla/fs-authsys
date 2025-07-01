@@ -12,7 +12,11 @@ export default function Login() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+
+    const cleanedValue = name === 'username' ? value.replace(/\s/g, '') : value;
+
+    setForm(prev => ({ ...prev, [name]: cleanedValue }));
+
     if (!touched[name]) {
       setTouched(prev => ({ ...prev, [name]: true }));
     }
@@ -43,6 +47,7 @@ export default function Login() {
               name="username"
               placeholder="Username"
               value={form.username}
+              autoComplete="off"
               onChange={handleChange}
               required
             />

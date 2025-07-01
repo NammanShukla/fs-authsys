@@ -14,12 +14,17 @@ export default function Register() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+
+    const cleanedValue = name === 'username' ? value.replace(/\s/g, '') : value;
+
+    setForm(prev => ({ ...prev, [name]: cleanedValue }));
+
     if (!touched[name]) {
       setTouched(prev => ({ ...prev, [name]: true }));
     }
-    validate(name, value);
-    if (name === 'password') checkStrength(value);
+
+    validate(name, cleanedValue);
+    if (name === 'password') checkStrength(cleanedValue);
   };
 
   const validate = (name, value) => {
@@ -30,6 +35,8 @@ export default function Register() {
         newErrors.username = 'Must be at least 3 characters';
       } else if (/^\d/.test(value)) {
         newErrors.username = 'Username should not start with a number';
+      } else if (/\s/.test(value)) {
+        newErrors.username = 'Username cannot contain spaces';
       } else {
         delete newErrors.username;
       }
@@ -80,6 +87,7 @@ export default function Register() {
             <input
               name="username"
               placeholder="Username"
+              autoComplete="off"
               value={form.username}
               onChange={handleChange}
               required
