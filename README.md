@@ -5,3 +5,4 @@
 - Home page, will direct the user to the login or the register page 
 - Login can redirect to register and vice versa 
 - once logged in, the user can logout which will land at the home page 
+- both forms will have validation 
