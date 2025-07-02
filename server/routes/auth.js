@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const User = require('../models/user');
 const router = express.Router();
@@ -6,42 +7,28 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
   const { username, password } = req.body;
   try {
-    const existing = await User.findOne({ username });
-    if (existing) {
-      return res.status(400).json({ error: 'Username already taken' });
-    }
-
     const user = new User({ username, password });
     await user.save();
     res.status(201).json({ message: 'User registered' });
-  } catch (err) {
-    console.error('Registration Error:', err);
-    res.status(500).json({ error: 'Something went wrong during registration' });
+  } catch {
+    res.status(400).json({ error: 'Username might already exist' });
   }
 });
 
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const user = await User.findOne({ username });
+  if (!user || !(await user.comparePassword(password)))
+    return res.status(401).json({ error: 'Invalid credentials' });
 
-router.post('/login', passport.authenticate('local'), (req, res) => {
-  res.json({ user: req.user });
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  res.json({ token, user: { id: user._id, username: user.username } });
 });
 
-router.get('/user', (req, res) => {
-  if (!req.isAuthenticated()) return res.status(401).json({ error: 'Not logged in' });
-  res.json({ user: req.user });
-});
-
-router.post('/logout', (req, res) => {
-  req.logout(() => {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('Session destruction error:', err);
-        return res.status(500).json({ error: 'Failed to log out' });
-      }
-      res.clearCookie('connect.sid');
-      res.json({ message: 'Logged out and session destroyed' });
-    });
-  });
-});
-
+router.get(
+  '/user',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => res.json({ user: req.user })
+);
 
 module.exports = router;
