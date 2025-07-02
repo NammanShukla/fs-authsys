@@ -8,7 +8,18 @@
 - both forms will have validation 
 
 
-### server side logic 
+
+### Updated server side logic 
+- connect to mongodb using mongoose 
+- still using passport-local for login only (to verify user), no more sessionsl; using bcrypt to compare passwords 
+- instead of serialization, using JWT; it signs in with user ID > sends it to front end 
+- frontend saves it to redux + localStorage and sends it to every API call 
+
+- backend verifies JWT using passport 
+- registration works by hashing the password using bcrypt and then saving it to mongodb with the username
+- on logout, clear the redux/localStorage and then redirect to the home page 
+
+### server side logic (Not Applicable Anymore)
 - connect to mongodb atlas using mongoose 
 - uses sessions via express-session with a key and stores sessiosn in the db 
 - using passport-local strat: <br>
