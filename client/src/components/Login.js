@@ -4,11 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
+import {useDispatch} from 'react-redux';
+import { setCredentials} from '../redux/authSlice';
+
 export default function Login() {
   const [form, setForm] = useState({ username: '', password: '' });
   const [touched, setTouched] = useState({ username: false, password: false });
   const [showPassword, setShowPassword] = useState(false);
   const nav = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +32,8 @@ export default function Login() {
     e.preventDefault();
     if (!isValid) return;
     try {
-      await API.post('/auth/login', form);
+      const res = await API.post('/auth/login', form);
+      dispatch(setCredentials(res.data));
       nav('/profile');
     } catch (err) {
       alert('Login failed');
