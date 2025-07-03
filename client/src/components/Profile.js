@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import API from '../api';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
+import Header from './Header'; 
 
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/authSlice';
@@ -15,9 +15,9 @@ export default function Profile() {
     API.get('/auth/user')
       .then(res => setUser(res.data.user))
       .catch(() => {
-        dispatch(logout()); 
+        dispatch(logout());
         alert('Session expired. Please log in again.');
-        nav('/login');
+        nav('/login'); 
       });
   }, [dispatch, nav]);
 

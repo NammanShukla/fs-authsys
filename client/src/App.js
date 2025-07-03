@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import Profile from './components/Profile';
+import ProtectedRoute from './components/ProtectedRoutes'; 
 
 export default function App() {
   return (
@@ -12,7 +13,15 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
