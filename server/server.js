@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 const authRoutes = require('./routes/auth');
+const cookieParser = require('cookie-parser');
 require('./config/passport')(passport);
 
 const app = express();
@@ -13,5 +14,6 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 app.use(passport.initialize());
 app.use('/auth', authRoutes);
+app.use(cookieParser());
 
 app.listen(5000, () => console.log('Server running on port 5000'));
