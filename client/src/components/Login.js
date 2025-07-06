@@ -29,16 +29,19 @@ export default function Login() {
   const isValid = form.username.trim() !== '' && form.password !== '';
 
   const login = async (e) => {
-    e.preventDefault();
-    if (!isValid) return;
-    try {
-      const res = await API.post('/auth/login', form);
-      dispatch(setCredentials(res.data));
-      nav('/profile');
-    } catch (err) {
-      alert('Login failed');
-    }
-  };
+  e.preventDefault();
+  if (!isValid) return;
+  try {
+    const res = await API.post('/auth/login', form);
+    console.log('Login success:', res.data); // 👈 Add this
+    dispatch(setCredentials(res.data));
+    nav('/profile');
+  } catch (err) {
+    console.error('Login error:', err.response?.data || err.message);
+    alert('Login failed');
+  }
+};
+
 
   return (
     <>
