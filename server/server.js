@@ -10,10 +10,15 @@ require('./config/passport')(passport);
 const app = express();
 mongoose.connect(process.env.MONGO_URI).then(() => console.log('MongoDB connected'));
 
+const profileRoutes = require('./routes/profile');
+
+
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 app.use(passport.initialize());
 app.use('/auth', authRoutes);
+app.use('/uploads', express.static('uploads'));
+app.use('/profile', profileRoutes);
 app.use(cookieParser());
 
 app.listen(5000, () => console.log('Server running on port 5000'));
