@@ -26,12 +26,44 @@ export default function Profile() {
     nav('/login');
   };
 
+  const handleUpload = async (e) => {
+    const formData = new FormData();
+    formData.append('avatar', e.target.files[0]);
+
+    try {
+      const res = await API.post('/profile/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setUser(prev => ({ ...prev, avatar: res.data.avatar }));
+    } catch (err) {
+      console.error('Upload failed:', err);
+      alert('Image upload failed');
+    }
+  };
+
   return user && (
     <>
       <Header />
       <main className="main-container">
         <div className="home-container">
-          <h2>Hi, {user.username} !</h2>
+          <h2>Hi, {user.username}!</h2>
+
+          <div className="avatar-section">
+            <img
+              src={
+                user.avatar
+                  ? `http://localhost:5000/uploads/${user.avatar}`
+                  : 'https://via.placeholder.com/150'
+              }
+              alt="Profile"
+              width={150}
+              style={{ borderRadius: '50%', marginBottom: '1rem' }}
+            />
+            <input type="file" accept="image/*" onChange={handleUpload} />
+          </div>
+
           <button onClick={handleLogout}>Logout</button>
         </div>
       </main>
