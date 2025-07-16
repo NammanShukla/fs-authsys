@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin')
 const cookieParser = require('cookie-parser');
 require('./config/passport')(passport);
 
@@ -17,6 +18,7 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 app.use(passport.initialize());
 app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes)
 app.use('/uploads', express.static('uploads'));
 app.use('/profile', profileRoutes);
 app.use(cookieParser());

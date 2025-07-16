@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Profile from './components/Profile';
 import ProtectedRoute from './components/ProtectedRoutes'; 
+import AdminPanel from './components/AdminPanel';
 
 export default function App() {
   return (
@@ -22,6 +23,17 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminPanel />
+            </ProtectedRoute>
+          }
+        />
+
+        
       </Routes>
     </Router>
   );

@@ -33,7 +33,7 @@ export default function Login() {
   if (!isValid) return;
   try {
     const res = await API.post('/auth/login', form);
-    console.log('Login success:', res.data); // 👈 Add this
+    console.log('Login success:', res.data);
     dispatch(setCredentials(res.data));
     nav('/profile');
   } catch (err) {
