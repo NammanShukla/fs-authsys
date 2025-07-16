@@ -43,50 +43,52 @@ export default function AdminPanel() {
       <div className="home-container">
         <h2>Admin Panel</h2>
 
-        <table className="user-table">
-          <thead>
-            <tr>
-              <th>Username</th>
-              <th>Current Role</th>
-              <th>Change Role</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(u => (
-              <tr key={u._id}>
-                <td>{u.username}</td>
-                <td>{u.role}</td>
-                <td>
-                  {editingUserId === u._id ? (
-                    <select
-                      className="styled-select"
-                      value={selectedRole}
-                      onChange={(e) => setSelectedRole(e.target.value)}
-                    >
-                      <option value="user">user</option>
-                      <option value="admin">admin</option>
-                    </select>
-                  ) : (
-                    <button
-                      className="confirm-btn"
-                      onClick={() => startEditing(u._id, u.role)}
-                    >
-                      Edit
-                    </button>
-                  )}
-                </td>
-                <td>
-                  {editingUserId === u._id && (
-                    <button className="confirm-btn" onClick={confirmUpdate}>
-                      Confirm
-                    </button>
-                  )}
-                </td>
+        <div className="admin-panel-wrapper">
+          <table className="user-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Current Role</th>
+                <th>Change Role</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map(u => (
+                <tr key={u._id}>
+                  <td>{u.username}</td>
+                  <td>{u.role}</td>
+                  <td>
+                    {editingUserId === u._id ? (
+                      <select
+                        className="styled-select"
+                        value={selectedRole}
+                        onChange={(e) => setSelectedRole(e.target.value)}
+                      >
+                        <option value="user">user</option>
+                        <option value="admin">admin</option>
+                      </select>
+                    ) : (
+                      <button
+                        className="confirm-btn"
+                        onClick={() => startEditing(u._id, u.role)}
+                      >
+                        Edit
+                      </button>
+                    )}
+                  </td>
+                  <td>
+                    {editingUserId === u._id && (
+                      <button className="confirm-btn" onClick={confirmUpdate}>
+                        Confirm
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {successMsg && <p className="success-msg">{successMsg}</p>}
       </div>
